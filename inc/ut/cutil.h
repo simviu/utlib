@@ -65,6 +65,15 @@ namespace ut
     extern bool s2data(const string& s, vector<int>& ds,    char c_deli=',');
     // hex string must with prefix of "0x"
     extern bool s2hex(const string& s, uint32_t& d);
+    //---- err exception
+    class ErrExcept : std::exception{
+    public:
+        using exception::exception;
+        ErrExcept(const string& s):s_(s){}
+        virtual string str()const{ return s_; }
+    protected:
+        string s_;
+    };
     //-------
     // KeyVals
     //-------
