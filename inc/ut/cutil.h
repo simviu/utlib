@@ -303,6 +303,7 @@ namespace ut
     inline ostream& operator << (ostream& s, const Sz& sz)
     {  s << sz.w << ", " << sz.h; return s; }
     //-----    
+    // TODO: rename Rctn
     struct Rect{
         Rect(){}
         Rect(const Px& c, const Sz& sz):cntr(c), sz(sz){}
@@ -382,6 +383,7 @@ namespace ut
 
     //---- Legacy C file handler helper
     // for streamming, such as Serial/ Socket
+    // TODO: local
     class CStream
     {
     public:
@@ -425,6 +427,7 @@ namespace ut
     //-------------
     // socket
     //-------------
+    // TODO: multiple connections
     namespace socket{
         class Node{
         public:
