@@ -423,12 +423,32 @@ namespace ut
         map<string, Sp<Test>> tests_;
 
     };
+    //-------------
+    // Packet
+    //-------------
+    // simple commnunication data packet, 
+    //   for socket or serial link.
+    class Packet{
+    public:
+        struct Head{
+            // note:include '\0'
+            unsigned char sPrefix[8]{"$utpack"};
+
+            // Payload length, 
+            //   len =L0 + L1*256 + L2*256*256 + L3*256*256*256
+            uint8_t L[4];
+            uint8_t idx=0;    // sequence idx
+            uint8_t chksum=0; // checksum of payload only
+        };
+
+    };
 
     //-------------
     // socket
     //-------------
     // TODO: multiple connections
     namespace socket{
+        //-----
         class Node{
         public:
             struct Cntx{
