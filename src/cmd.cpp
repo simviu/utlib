@@ -202,8 +202,8 @@ string Cmd::Ack::str()const
 {
     stringstream s;
     s << "run_ok=" << run_ok << endl;
-    s << "log:\n";
-    s << s_log << endl;
+    s << "res:\n";
+    s << s_res << endl;
     return s.str();
 }
 //---
@@ -221,7 +221,7 @@ string Cmd::Ack::enc()const
     s_ok += run_ok?"true":"false" ;
     s_ok += "\n";
 
-    s += s_ok + s_log + "\n"; 
+    s += s_ok + s_res + "\n"; 
     s += "cmd_ack_end\n";
     return s;
 }
@@ -252,9 +252,9 @@ bool Cmd::Ack::dec(CStrs& ss)
         return false;
     } 
     //----
-    s_log = "";
+    s_res = "";
     for(int i=2;i<ss.size();i++)
-        s_log += ss[i];
+        s_res += ss[i];
     return true;
 }
 
@@ -315,7 +315,7 @@ bool Cmd::run_server(CStrs& args)
         s_log = ""; // clear log
         Ack ack;
         ack.run_ok = this->runln(sln);
-        ack.s_log = s_log;
+        ack.s_res = sRes_;
         string sr = ack.enc();
         
         //---

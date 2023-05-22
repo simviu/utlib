@@ -524,7 +524,8 @@ namespace ut
         struct Ack{
             string enc()const;
             bool dec(CStrs& ss);
-            string s_log;
+            //string s_log;
+            string s_res;
             bool run_ok = false;
             string str()const;
 
@@ -533,7 +534,9 @@ namespace ut
 
         //----
         string sHelp_;
+        const string& getRes()const{ return sRes_; }
     protected:
+        string sRes_; // result string, can be filled and retrieved.
         bool run_core(int argc, char ** argv);
 
         bool run_func(CStrs& args);
