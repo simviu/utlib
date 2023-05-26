@@ -262,9 +262,6 @@ bool Cmd::Ack::dec(CStrs& ss)
 //----- arm server
 bool Cmd::run_server(CStrs& args)
 {
-
-    socket::Server svr;
-
     StrTbl kv; parseKV(args, kv);
     string s_port = lookup(kv, string("port"));
     int port=0; 
@@ -274,6 +271,13 @@ bool Cmd::run_server(CStrs& args)
         return false;
     }
    
+    return run_server(port);
+}
+//----
+bool Cmd::run_server(int port)
+{
+    log_i("Cmd::run_server() on port:"+to_string(port));
+    socket::Server svr;
     //-----
     bool ok = svr.start(port);
     if(!ok)
@@ -281,11 +285,6 @@ bool Cmd::run_server(CStrs& args)
         log_e("Failed to start server at port:"+to_string(port));
         return false;
     }
-    //---- set log call back (TODO: option)
-    string s_log;
-    utlog::setCallbk([&](CStr& s){
-        s_log += s;
-    });
     
     //---- server started
     while(svr.isRunning())
@@ -312,7 +311,6 @@ bool Cmd::run_server(CStrs& args)
         log_i("Cmd server recv and run:'"+sln+"'");
 
         //---- run session
-        s_log = ""; // clear log
         Ack ack;
         ack.run_ok = this->runln(sln);
         ack.s_res = sRes_;

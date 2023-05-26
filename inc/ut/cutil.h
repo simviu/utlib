@@ -531,7 +531,7 @@ namespace ut
 
         };
         bool run_server(CStrs& args);
-
+        bool run_server(int port);
         //----
         string sHelp_;
         const string& getRes()const{ return sRes_; }
