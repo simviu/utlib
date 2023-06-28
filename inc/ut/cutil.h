@@ -299,6 +299,8 @@ namespace ut
         {  stringstream s; s << w << "," << h << endl; return s.str(); }
         bool set(const string& s, char c_deli=',');
         void operator *= (float s){ w*=s; h*=s; }
+        bool operator ==(const Sz& b)const
+            { return (w==b.w)&&(h==b.h); }
     };
     inline ostream& operator << (ostream& s, const Sz& sz)
     {  s << sz.w << ", " << sz.h; return s; }
