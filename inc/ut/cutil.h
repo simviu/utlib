@@ -91,6 +91,7 @@ namespace ut
         //----
         bool has(const string& sKey)const;
         string operator[] (const string& skey) { return get(skey); }
+        string operator[] (const string& skey) const{ return get(skey); }
         string get(const string& skey)const;
 
         bool get(const string& skey, double& d)const;
