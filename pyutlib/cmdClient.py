@@ -15,6 +15,7 @@ ACK_MAX_LNS = 100
 class CmdClient(object):
     def __init__(self):
         self.isConnected_ = False
+        self.logCB = None
         return None
 
     #----
@@ -24,8 +25,9 @@ class CmdClient(object):
     #----
     def connect(self, sHost, port):
         self.isConnected_ = False
-        print("VRP client connect to '", 
-                sHost, ":", port,"'...")
+        s_url = sHost + ":" + str(port)
+        self.log_("VRP client connect to '" +
+                  s_url + "'...")
         self.sock_ = socket.socket(socket.AF_INET, 
                                    socket.SOCK_STREAM)
         self.sock_.connect((sHost, port))        
@@ -33,8 +35,7 @@ class CmdClient(object):
         try:
             self.sock_.getsockopt(socket.SOL_SOCKET, socket.SO_ERROR)
         except socket.error:
-            print("[Error]:Failed to connect to ''", 
-                    sHost, ":", port,"'...")
+            self.logErr_("Failed to connect to host")
             return False
         #-----        
         print("connected")
@@ -46,9 +47,26 @@ class CmdClient(object):
         try:
             self.sock_.sendall(bytes(scmd, "utf-8"))
         except:
+            self.logErr_("Failed to sendCmd")
             return False
         return True
 
+    #----
+    def loadFile(self, sf):
+
+        return True
+    
+    #---------------private ----------
+    def log_(self, s, isErr = False):
+        print(s)
+        if self.logCB is not None:
+            self.logCB.out(s, isErr)
+        return
+    #----
+    def logErr_(self, s):
+        self.log_("[Error]:"+s, True)
+        return
+    
     #-----
     def getAck_(self):
         ok = False
@@ -65,7 +83,7 @@ class CmdClient(object):
                 bAck = True
             elif ss[0] == "cmd_ack_end":
                 if not bAck:
-                    print("Error: header 'cmd_ack' not found")
+                    self.logErr_("header 'cmd_ack' not found")
                     return False,sRes
                 return ok,sRes
             elif ss[0] == "cmd_ok":
@@ -73,7 +91,9 @@ class CmdClient(object):
             else:
                 sRes = sRes + s +"\n"
         #-----
-        raise("Error: getAck() ACK_MAX_LNS reached, didn't recv cmd_ack_end")
+        s = "getAck() ACK_MAX_LNS reached, didn't recv cmd_ack_end"
+        self.logErr_(s)
+        return False
         
         
 #---------------
