@@ -50,11 +50,27 @@ class CmdClient(object):
             self.logErr_("Failed to sendCmd")
             return False
         return True
-
+    
     #----
     def loadFile(self, sf):
+        ok = False
+        self.log_("Load cmd file:'", sf, "'")
+        with open(sf) as f:
+            lns = f.readlines()
+            i = 0
+            for ln in lns:
+                i = i + 1
+                scmd = ln.replace("\n", "")
+                ok = self.sendCmd(scmd)
+                if not ok:
+                    self.logErr_("Cmd fail, line ", i, 
+                                 ", '", scmd, "'")
+                    return False
 
-        return True
+            return ok
+
+        return ok
+
     
     #---------------private ----------
     def log_(self, s, isErr = False):
