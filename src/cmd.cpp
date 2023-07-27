@@ -289,7 +289,6 @@ bool Cmd::run_server(int port)
     //---- server started
     while(svr.isRunning())
     {
-        string slnr;
         if(!svr.isConnected())
         {
             sys::sleep(0.2);
@@ -298,13 +297,15 @@ bool Cmd::run_server(int port)
 
         //----
         log_i("Cmd server wait...");
-        if(!svr.recvLn(slnr)) 
+        string srcv;
+        if(!svr.recvLn(srcv)) 
         {
             sys::sleep(0.2);
             continue;
         }
         //-----
-        string sln = ut::remove(slnr, '\n');
+        string sr2 = rm_comment(srcv);
+        string sln = ut::remove(sr2, '\n');
         if(sln=="")continue;
         //---
         //---- run cmd

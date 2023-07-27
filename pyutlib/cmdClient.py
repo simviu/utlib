@@ -45,7 +45,10 @@ class CmdClient(object):
     #---
     def sendCmd(self, scmd):
         try:
-            self.sock_.sendall(bytes(scmd, "utf-8"))
+            s = scmd
+            if s[-1] != "\n":
+                s = s + "\n"
+            self.sock_.sendall(bytes(s, "utf-8"))
         except:
             self.logErr_("Failed to sendCmd")
             return False
@@ -54,13 +57,18 @@ class CmdClient(object):
     #----
     def loadFile(self, sf):
         ok = False
-        self.log_("Load cmd file:'", sf, "'")
+        self.log_("Load cmd file:'" + sf + "'")
         with open(sf) as f:
             lns = f.readlines()
             i = 0
+            self.log_("lines="+str(len(lns)))
             for ln in lns:
                 i = i + 1
-                scmd = ln.replace("\n", "")
+                scmd = self.chk_cmd(ln)
+                if scmd == "":
+                    continue
+                #-----
+                self.log_("[line "+str(i)+"]:'"+scmd+"'")
                 ok = self.sendCmd(scmd)
                 if not ok:
                     self.logErr_("Cmd fail, line ", i, 
@@ -82,6 +90,21 @@ class CmdClient(object):
     def logErr_(self, s):
         self.log_("[Error]:"+s, True)
         return
+    
+    #----
+    def chk_cmd(self, sLn):
+        s = ""
+        #--- remove comment
+        for c in sLn:
+            if c == "#":
+                break
+            if c== "\n":
+                break
+            s = s + c
+        #--- check if empty tokens
+        if len(s.split(" ")) == 0:
+            return ""
+        return s
     
     #-----
     def getAck_(self):
