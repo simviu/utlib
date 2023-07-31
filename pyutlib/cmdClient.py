@@ -15,7 +15,7 @@ ACK_MAX_LNS = 100
 class CmdClient(object):
     def __init__(self):
         self.isConnected_ = False
-        self.logCB = None
+        self.logCB = None # lambda s, isErr:...
         return None
 
     #----
@@ -84,7 +84,7 @@ class CmdClient(object):
     def log_(self, s, isErr = False):
         print(s)
         if self.logCB is not None:
-            self.logCB.out(s, isErr)
+            self.logCB(s, isErr)
         return
     #----
     def logErr_(self, s):
