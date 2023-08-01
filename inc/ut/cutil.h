@@ -271,6 +271,9 @@ namespace ut
         uint8_t g=0; 
         uint8_t b=0;
         uint8_t a=255;
+        //Color(){}
+        //Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a):
+        //    r(r),g(g),b(b),a(a){}
         bool set(const string& s, char c_deli=',');
         string str()const 
         { stringstream s; 
@@ -288,6 +291,9 @@ namespace ut
     {  s << px.str(); return s; }
     inline istream& operator >> (istream& s, Px& px)
     {  s >> px.x; s >> px.y; return s; }
+    inline Color operator - (const Color& c1, const Color& c2)
+        { return {  (uint8_t)(c1.r-c2.r), (uint8_t)(c1.g-c2.g), 
+                    (uint8_t)(c1.b-c2.b), (uint8_t)(c1.a-c2.a)}; }
     //----
     struct Sz{
         Sz(){}
@@ -302,6 +308,8 @@ namespace ut
         void operator *= (float s){ w*=s; h*=s; }
         bool operator ==(const Sz& b)const
             { return (w==b.w)&&(h==b.h); }
+        bool operator !=(const Sz& b)const
+            { return (w!=b.w)||(h!=b.h); }
     };
     inline ostream& operator << (ostream& s, const Sz& sz)
     {  s << sz.w << ", " << sz.h; return s; }
