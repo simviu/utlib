@@ -67,13 +67,21 @@ class CmdClient(object):
                 scmd = self.chk_cmd(ln)
                 if scmd == "":
                     continue
-                #-----
+                #----- send cmd
                 self.log_("[line "+str(i)+"]:'"+scmd+"'")
                 ok = self.sendCmd(scmd)
                 if not ok:
                     self.logErr_("Cmd fail, line ", i, 
                                  ", '", scmd, "'")
                     return False
+                #---- get ack
+                ok,sRes = self.getAck_()
+                if not ok:
+                    print("Error: getAck() failed")
+                    return False
+                
+                print("  getAck() ok")
+
 
             return ok
 
@@ -105,7 +113,24 @@ class CmdClient(object):
         if len(s.split(" ")) == 0:
             return ""
         return s
-    
+
+    #----
+
+    #------------- private -------------
+    def recvLn_(self):
+        if self.sock_ is None:
+            raise Exception('Not connected')
+            
+        s = ""
+        for i in range(LN_MAX_CHARS):
+            b = self.sock_.recv(1)
+            c = b.decode('UTF-8')
+            if c == "\n":
+                return s
+            #print("recv:"+c)
+            s = s + c
+
+        return s    
     #-----
     def getAck_(self):
         ok = False
@@ -132,7 +157,7 @@ class CmdClient(object):
         #-----
         s = "getAck() ACK_MAX_LNS reached, didn't recv cmd_ack_end"
         self.logErr_(s)
-        return False
+        return False,"ACK_MAX_LNS"
         
         
 #---------------
