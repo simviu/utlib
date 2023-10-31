@@ -143,6 +143,16 @@ namespace ut
     {   return d - ((int)(d/360.0+(d>0?0.5:-0.5)))*360.0; }
     inline bool isValid(double d)
     { return !(std::isnan(d)||std::isinf(d)); }
+    //-----
+    class PolyCurve{
+    public:
+        PolyCurve(){}
+        PolyCurve(const vector<double>& k):k_(k){};
+        float calc(double t)const;    
+        void setk(const vector<double>& k){ k_ = k; }
+    protected:
+        vector<double> k_;
+    };    
     //-----------
     // log
     //-----------
