@@ -47,8 +47,12 @@ namespace ut
     using StrTbl = map<string, string>;
     using CStrTbl = const StrTbl;   
     inline string lookup(CStrTbl& m, CStr& sk)
-    {  auto it=m.find(sk); 
-        if(it==m.end()) return ""; return it->second; }
+    {  
+        auto it=m.find(sk); 
+        if(it==m.end()) 
+            return ""; 
+        return it->second; 
+    }
     extern bool parseKV(CStrs& ss, StrTbl& kv);
     inline bool has(CStrTbl& m, CStr& sk)
     { auto it=m.find(sk); return it!=m.end(); }
@@ -393,11 +397,14 @@ namespace ut
 
         uint8_t operator[](int i)
         {  if(i>=n) return 0xee; return p[i]; }
-        size_t n = 0;
-        uint8_t* p = nullptr; 
+        
         //--- to C vector buf
         void to(vector<uint8_t>& d)const
         { for(int i=0;i<n;i++)d.push_back(*(p+i)); }
+
+        //----
+        uint8_t* p = nullptr; 
+        size_t n = 0;
     protected:
         bool bDel = false;
     };
