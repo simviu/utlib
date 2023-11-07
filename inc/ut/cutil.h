@@ -526,27 +526,24 @@ namespace ut
             std::thread thd_;
         };
     }
+
     //-------------
-    // Cmd
+    // CmdBase
     //-------------
     // string cmd line handler
-    class Cmd{
+    class CmdBase{
     public:
         using Fun=function<bool(CStrs& args)>;
-        Cmd(){}
-        Cmd(CStr& sHelp):sHelp_(sHelp){}
-        Cmd(CStr& sHelp, Fun f):sHelp_(sHelp), f_(f){}
-        void add(CStr& s, Sp<Cmd> p) { cmds_[s]=p; }
-        void add(CStr& s, CStr& sH, Fun f) { add(s, mkSp<Cmd>(sH, f)); }
+        CmdBase(){}
+        CmdBase(CStr& sHelp):sHelp_(sHelp){}
+        CmdBase(CStr& sHelp, Fun f):sHelp_(sHelp), f_(f){}
+        void add(CStr& s, Sp<CmdBase> p) { cmds_[s]=p; }
+        void add(CStr& s, CStr& sH, Fun f) { add(s, mkSp<CmdBase>(sH, f)); }
         virtual bool runln(const string& sLn);
-        virtual bool run(CStrs& args);
 
-        bool runFile(CStr& sf);
-        virtual bool run(int argc, char ** argv);
         string help(const string& s_prefix="")const;
         auto& cmds(){ return cmds_; }
         auto& cmds()const{ return cmds_; }
-        bool run_console();
 
         //---- Simple protocol for Server ack
         struct Ack{
@@ -558,19 +555,33 @@ namespace ut
             string str()const;
 
         };
-        bool run_server(CStrs& args);
-        bool run_server(int port);
         //----
         string sHelp_;
         const string& getRes()const{ return sRes_; }
     protected:
         string sRes_; // result string, can be filled and retrieved.
-        bool run_core(int argc, char ** argv);
-
+        bool run_args(CStrs& args);
         bool run_func(CStrs& args);
         Fun f_=nullptr;
-        map<string, Sp<Cmd>> cmds_;
+        map<string, Sp<CmdBase>> cmds_;
         string rm_comment(CStr & s)const;
+    };
+    //-------------
+    // Cmd
+    //-------------
+    // string cmd line handler
+    class Cmd : public CmdBase{
+    public:
+        using CmdBase::CmdBase;
+
+        bool runFile(CStr& sf);
+        bool run(int argc, char ** argv);
+        bool run_console();
+        bool run_server(CStrs& args);
+        bool run_server(int port);
+
+    protected:
+        bool run_core(int argc, char ** argv);
         string usage()const;
     };
 }

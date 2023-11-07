@@ -142,14 +142,12 @@ namespace ut{
     extern bool s2data(const string& s, vector<double>& ds, char c_deli)
     {
         auto ts = tokens(s, c_deli);
-        try
+        for(auto& t : ts)
         {
-            for(auto& t : ts)
-                ds.push_back(stod(t));
-        }
-        catch(exception& e)
-        {  
-            return false; 
+            double d=0;
+            int r = sscanf(s.c_str(), "%lf", &d);
+            if(r!=1) return false;
+            ds.push_back(d);
         }
         return true;
     }
@@ -157,14 +155,12 @@ namespace ut{
     extern bool s2data(const string& s, vector<int>& ds, char c_deli)
     {
         auto ts = tokens(s, c_deli);
-        try
+        for(auto& t : ts)
         {
-            for(auto& t : ts)
-                ds.push_back(stoi(t));
-        }
-        catch(exception& e)
-        {  
-            return false; 
+            int d=0;
+            int r = sscanf(s.c_str(), "%d", &d);
+            if(r!=1) return false;
+            ds.push_back(d);
         }
         return true;
     }
