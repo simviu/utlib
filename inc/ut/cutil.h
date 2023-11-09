@@ -558,6 +558,7 @@ namespace ut
         //----
         string sHelp_;
         const string& getRes()const{ return sRes_; }
+        bool run_console();
     protected:
         string sRes_; // result string, can be filled and retrieved.
         bool run_args(CStrs& args);
@@ -576,7 +577,7 @@ namespace ut
 
         bool runFile(CStr& sf);
         bool run(int argc, char ** argv);
-        bool run_console();
+
         bool run_server(CStrs& args);
         bool run_server(int port);
 

@@ -145,7 +145,7 @@ namespace ut{
         for(auto& t : ts)
         {
             double d=0;
-            int r = sscanf(s.c_str(), "%lf", &d);
+            int r = sscanf(t.c_str(), "%lf", &d);
             if(r!=1) return false;
             ds.push_back(d);
         }
@@ -158,7 +158,7 @@ namespace ut{
         for(auto& t : ts)
         {
             int d=0;
-            int r = sscanf(s.c_str(), "%d", &d);
+            int r = sscanf(t.c_str(), "%d", &d);
             if(r!=1) return false;
             ds.push_back(d);
         }

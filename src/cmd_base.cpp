@@ -203,5 +203,24 @@ string CmdBase::help(const string& s_prefix)const
 }
 
 
+//----
+bool CmdBase::run_console()
+{
+    log_i("Cmd console, 'help' for help, 'quit' to exit.\n");
+    while(1)
+    {
+        log_s("> ") ;
+        string sln;
+        std::getline(std::cin, sln);
+        
+        //--- check quit
+        if(sln=="quit") break;
+
+        
+        //--- run
+        runln(sln);
+    }
+    return true;
+}
 
 

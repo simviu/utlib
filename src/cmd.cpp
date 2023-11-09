@@ -128,25 +128,6 @@ bool Cmd::runFile(CStr& sf)
 
 }
 
-//----
-bool Cmd::run_console()
-{
-    log_i("Cmd console, 'help' for help, 'quit' to exit.\n");
-    while(1)
-    {
-        log_s("> ") ;
-        string sln;
-        std::getline(std::cin, sln);
-        
-        //--- check quit
-        if(sln=="quit") break;
-
-        
-        //--- run
-        runln(sln);
-    }
-    return true;
-}
 //----- arm server
 bool Cmd::run_server(CStrs& args)
 {
