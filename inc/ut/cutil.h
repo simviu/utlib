@@ -60,6 +60,9 @@ namespace ut
     //----
     extern string remove(const string& s, const char c);
     extern vector<string> tokens(const string& s, char c_deli=' ');
+    //---- if width -1, unset
+    extern string f2s(double d, int width=3);
+
     //----
     template<typename T>
         bool s2d(const string& s, T& d)

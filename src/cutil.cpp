@@ -137,6 +137,14 @@ namespace ut{
         s = it->second;
         return true;
     }
+    //-------
+    extern string f2s(double d, int width)
+    {
+        stringstream s;
+        s << std::setw(width);
+        s << std::fixed << d;
+        return s.str();
+    }
 
     //-----------------
     extern bool s2data(const string& s, vector<double>& ds, char c_deli)
