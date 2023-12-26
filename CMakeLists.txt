@@ -1,11 +1,11 @@
 #set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
 #  CACHE STRING "Vcpkg toolchain file")
 
+#---- temp fix for gcc new install
+#set(CMAKE_C_COMPILER "/usr/bin/gcc")
+#set(CMAKE_CXX_COMPILER "/usr/bin/g++")
 
-set(CMAKE_C_COMPILER "/usr/bin/gcc")
-set(CMAKE_CXX_COMPILER "/usr/bin/g++")
-
-project(vsnLib)
+project(utLib)
 cmake_minimum_required(VERSION 3.4)
 
 
