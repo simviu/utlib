@@ -162,7 +162,7 @@ class CmdClient(object):
         
 #---------------
 class TestApp(object):
-    def run():
+    def run(self):
         cc = CmdClient()
         ok = cc.connect(TEST_HOST, TEST_PORT)
         if not ok:
