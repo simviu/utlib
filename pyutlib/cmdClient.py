@@ -55,6 +55,28 @@ class CmdClient(object):
         return True
     
     #----
+    def run_console(self):
+        while(True):
+            ln = input(">")
+            scmd = self.chk_cmd(ln)
+                if scmd == "":
+                    continue
+            
+            ok = self.sendCmd(scmd)
+            if not ok:
+                self.logErr_("Cmd fail, line ", 
+                             i, ", '", scmd, "'")
+            #---- get ack
+            ok,sRes = self.getAck_()
+            if not ok:
+                print("Error: getAck() failed")
+                continue
+            
+            print("  getAck() ok")
+
+        return True
+    
+    #----
     def loadFile(self, sf):
         ok = False
         self.log_("Load cmd file:'" + sf + "'")
