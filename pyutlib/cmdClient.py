@@ -56,16 +56,30 @@ class CmdClient(object):
     
     #----
     def run_console(self):
+        #---
+        if len(sys.argv) < 3:
+            print("Usage: python cmdClient.py <HOST> <PORT>")
+            return False
+
+        sHOST = sys.argv[1]
+        port = int(sys.argv[2])
+        print("Connect to :", sHOST, " : ",port, "...")
+        ok = cc.connect(sHOST, port)
+        if not ok:
+            return False
+
+        #-----
         while(True):
             ln = input(">")
             scmd = self.chk_cmd(ln)
-                if scmd == "":
-                    continue
+            if scmd == "":
+                continue
             
             ok = self.sendCmd(scmd)
             if not ok:
-                self.logErr_("Cmd fail, line ", 
-                             i, ", '", scmd, "'")
+                self.logErr_("Cmd failed", 
+                             ", '", scmd, "'")
+                
             #---- get ack
             ok,sRes = self.getAck_()
             if not ok:
@@ -89,6 +103,7 @@ class CmdClient(object):
                 scmd = self.chk_cmd(ln)
                 if scmd == "":
                     continue
+
                 #----- send cmd
                 self.log_("[line "+str(i)+"]:'"+scmd+"'")
                 ok = self.sendCmd(scmd)
@@ -196,7 +211,12 @@ class TestApp(object):
 # main
 #----------
 if __name__ == "__main__":
-    app = TestApp()
-    app.run()
+    #app = TestApp()
+    #app.run()
 
+    cc = CmdClient()
+    if cc.run_console():
+        exit(0)
+
+    exit(1)
 
