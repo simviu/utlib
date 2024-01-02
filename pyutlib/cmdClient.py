@@ -26,7 +26,7 @@ class CmdClient(object):
     def connect(self, sHost, port):
         self.isConnected_ = False
         s_url = sHost + ":" + str(port)
-        self.log_("VRP client connect to '" +
+        self.log_(" client connect to '" +
                   s_url + "'...")
         self.sock_ = socket.socket(socket.AF_INET, 
                                    socket.SOCK_STREAM)
@@ -75,6 +75,11 @@ class CmdClient(object):
             if scmd == "":
                 continue
             
+            #---- build in cmd
+            if(scmd=="quit"):
+                exit(0)
+
+            #-----
             ok = self.sendCmd(scmd)
             if not ok:
                 self.logErr_("Cmd failed", 
@@ -87,6 +92,7 @@ class CmdClient(object):
                 continue
             
             print("  getAck() ok")
+            print("sRes:\n", sRes)
 
         return True
     
@@ -118,6 +124,7 @@ class CmdClient(object):
                     return False
                 
                 print("  getAck() ok")
+                print("sRes:\n", sRes)
 
 
             return ok
