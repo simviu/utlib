@@ -178,6 +178,7 @@ bool Cmd::run_server(int port)
         if(sln=="")continue;
         //---
         //---- run cmd
+        sRes_ = "";
         log_i("Cmd server recv and run:'"+sln+"'");
 
         //---- run session
