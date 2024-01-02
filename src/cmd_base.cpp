@@ -142,7 +142,7 @@ bool CmdBase::Ack::dec(CStrs& ss)
     } 
     //----
     s_res = "";
-    for(int i=2;i<ss.size();i++)
+    for(int i=2;i<ss.size()-1;i++)
         s_res += ss[i];
     return true;
 }
