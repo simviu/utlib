@@ -13,6 +13,10 @@
 #include <unistd.h>
 #include <stdlib.h> 
 #include <netinet/in.h>
+#include <strings.h>
+
+#define _OE_SOCKETS
+#include <netdb.h> // gethostname()
 
 using namespace ut;
 using namespace socket;
@@ -249,11 +253,21 @@ bool Client::connect(const string& sHost, int port)
 {
     log_i("Socket client connect to "+
         sHost + " : "+to_string(port) + " ...");
+
+    //----
     cntx_.port = port;
     cntx_.sHost = sHost;
-    
     cntx_.bConnected = false;
 
+    //---- resolve hostname
+    struct hostent *server;
+    server = gethostbyname(sHost.c_str());
+    if(server == NULL) {
+        log_e("Name resolve failed");
+        return false;
+    }
+
+    //----
 	int client_fd;
 	struct sockaddr_in serv_addr;
 
@@ -263,10 +277,15 @@ bool Client::connect(const string& sHost, int port)
 		log_e("Client socket creation failed");
 		return false;
 	}
+    bzero((char *) &serv_addr, sizeof(serv_addr));
+    bcopy((char *)server->h_addr, 
+         (char *)&serv_addr.sin_addr.s_addr,
+         server->h_length);
 
 	serv_addr.sin_family = AF_INET;
 	serv_addr.sin_port = htons(cntx_.port);
 
+    /* --- Previous
 	// Convert IPv4 and IPv6 addresses from text to binary
 	// form
 	if (inet_pton(AF_INET, sHost.c_str(), &serv_addr.sin_addr)
@@ -274,6 +293,7 @@ bool Client::connect(const string& sHost, int port)
 		log_e("Invalid host address:'"+sHost+"'");
 		return false;
 	}
+    */
     //------
 	if ((client_fd
 		= ::connect(sock, (struct sockaddr*)&serv_addr,
