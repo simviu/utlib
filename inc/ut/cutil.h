@@ -199,6 +199,11 @@ namespace ut
         { return std::chrono::high_resolution_clock::now(); }
         inline double elapse(const Time t1, const Time t2)
         { std::chrono::duration<double> e=t2-t1; return e.count(); }
+
+        //----
+        extern bool exists(const string& s);
+        extern bool mkdir(const string& s);
+
         //----
         class FPS{
         public:
@@ -212,9 +217,6 @@ namespace ut
             Time t_ = now();
             list<double> dts;
         };
-        //----
-        extern bool exists(const string& s);
-        extern bool mkdir(const string& s);
     }
     
     //----------------

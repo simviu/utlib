@@ -165,7 +165,7 @@ bool Cmd::run_server(int port)
         } 
 
         //----
-        log_i("Cmd server wait...");
+        log_i("Cmd server wait...('q' to quit)");
         string srcv;
         if(!svr.recvLn(srcv)) 
         {
