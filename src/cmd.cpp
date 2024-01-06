@@ -146,6 +146,7 @@ bool Cmd::run_server(CStrs& args)
 bool Cmd::run_server(int port)
 {
     log_i("Cmd::run_server() on port:"+to_string(port));
+    std::cout << "   press 'q<ENTER>' to quit" << endl;
     socket::Server svr;
     //-----
     bool ok = svr.start(port);
@@ -154,9 +155,18 @@ bool Cmd::run_server(int port)
         log_e("Failed to start server at port:"+to_string(port));
         return false;
     }
+    //---- thread for key 'q'
+    bool reqq = false; // request quit
+    std::thread thd_q([&reqq](){
+        while(getchar()!='q')
+            std::cout << "press 'q<ENTER>' to quit" << endl;
+        reqq = true;
+        log_i("  quit...");
+    });
+    thd_q.detach();
     
     //---- server started
-    while(svr.isRunning())
+    while(svr.isRunning() && (!reqq) )
     {
         if(!svr.isConnected())
         {
@@ -165,7 +175,7 @@ bool Cmd::run_server(int port)
         } 
 
         //----
-        log_i("Cmd server wait...('q' to quit)");
+        log_i("Cmd server wait cmd...");
         string srcv;
         if(!svr.recvLn(srcv)) 
         {
